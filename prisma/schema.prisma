@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Winery {
+  id       Int    @id @default(autoincrement())
+  name     String @unique
+  slug     String @unique
+  lat      Float
+  lng      Float
+  category String
+
+  wines Wine[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Wine {
+  id             Int    @id @default(autoincrement())
+  name           String
+  slug           String @unique
+  color          String
+  alcoholPercent Float
+  vintage        Int
+  bodyScore      Int
+  aromaTags      String
+  priceRangeMin  Float
+  priceRangeMax  Float
+
+  wineryId Int
+  winery   Winery @relation(fields: [wineryId], references: [id], onDelete: Cascade)
+
+  wineAdditives WineAdditive[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Additive {
+  id          Int    @id @default(autoincrement())
+  name        String @unique
+  description String
+
+  wineAdditives WineAdditive[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WineAdditive {
+  wineId     Int
+  additiveId Int
+
+  wine     Wine     @relation(fields: [wineId], references: [id], onDelete: Cascade)
+  additive Additive @relation(fields: [additiveId], references: [id], onDelete: Cascade)
+
+  @@id([wineId, additiveId])
+}
