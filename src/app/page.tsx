@@ -9,5 +9,5 @@ export default async function HomePage() {
     redirect("/questionnaire");
   }
 
-  redirect("/questionnaire");
+  redirect("/discover");
 }

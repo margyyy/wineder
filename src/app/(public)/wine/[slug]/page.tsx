@@ -1,7 +1,8 @@
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { WineFeedbackToggle } from "../../../../components/matching/WineFeedbackToggle";
-import { listWines } from "../../../../lib/data/repositories/wineRepository";
+import { WineAvailabilityMap } from "../../../../components/maps/WineAvailabilityMap";
+import { listWineAvailabilityPoints } from "../../../../lib/data/repositories/discoveryRepository";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -9,10 +10,9 @@ type Props = {
 
 export default async function WineDetailPage({ params }: Props) {
   const { slug } = await params;
-  const wines = await listWines();
-  const wine = wines.find((item) => item.slug === slug);
+  const availability = await listWineAvailabilityPoints(slug);
 
-  if (!wine) {
+  if (!availability) {
     notFound();
   }
 
@@ -21,17 +21,24 @@ export default async function WineDetailPage({ params }: Props) {
 
   return (
     <main>
-      <section style={{ maxWidth: 760, margin: "0 auto", padding: "24px 16px" }}>
-        <h1 style={{ marginTop: 0 }}>{wine.name}</h1>
-        <p style={{ color: "var(--vm-muted)" }}>Cantina: {wine.winery.name}</p>
-        <p style={{ color: "var(--vm-muted)" }}>Score corpo: {wine.corpo.toFixed(2)}</p>
+      <section style={{ maxWidth: 860, margin: "0 auto", padding: "24px 16px", display: "grid", gap: 14 }}>
+        <h1 style={{ marginTop: 0 }}>{availability.wine.name}</h1>
+        <p style={{ margin: 0, color: "var(--vm-muted)" }}>
+          {availability.wine.color.toUpperCase()} • {availability.wine.alcoholPercent.toFixed(1)}% • {availability.wine.vintage}
+        </p>
+
         {sessionId ? (
-          <WineFeedbackToggle sessionId={sessionId} wineId={wine.id} />
+          <WineFeedbackToggle sessionId={sessionId} wineId={availability.wine.id} />
         ) : (
-          <p style={{ color: "var(--vm-muted)" }}>
+          <p style={{ color: "var(--vm-muted)", margin: 0 }}>
             Completa prima il questionario per attivare like/dislike.
           </p>
         )}
+
+        <section style={{ display: "grid", gap: 8 }}>
+          <h2 style={{ margin: 0 }}>Dove trovarlo</h2>
+          <WineAvailabilityMap points={availability.points} />
+        </section>
       </section>
     </main>
   );

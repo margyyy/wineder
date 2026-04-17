@@ -1,20 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { questionBank } from "../../lib/domain/matching/questionBank";
-import { MatchResultsList } from "../matching/MatchResultsList";
 import { QuestionStepCard } from "./QuestionStepCard";
 import { QuestionnaireProgress } from "./QuestionnaireProgress";
 
-type SurveyResponse = {
-  sessionId: string;
-  topMatches: Array<{ id: number; slug: string; name: string; score: number }>;
-};
-
 export function QuestionnaireFlow() {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [result, setResult] = useState<SurveyResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const currentQuestion = questionBank[step];
@@ -43,20 +38,7 @@ export function QuestionnaireFlow() {
       return;
     }
 
-    const body = (await response.json()) as SurveyResponse;
-    setResult(body);
-  }
-
-  if (result) {
-    return (
-      <section style={{ display: "grid", gap: 16 }}>
-        <h2 style={{ margin: 0 }}>I tuoi primi match</h2>
-        <p style={{ margin: 0, color: "var(--vm-muted)" }}>
-          Questo ranking usa cosine similarity e si aggiorna con i tuoi feedback.
-        </p>
-        <MatchResultsList sessionId={result.sessionId} matches={result.topMatches} />
-      </section>
-    );
+    router.push("/discover");
   }
 
   return (
