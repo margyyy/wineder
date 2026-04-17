@@ -3,6 +3,7 @@ import { applyDiscoveryFilters } from "./filterEngine";
 
 const rows = [
   {
+    name: "Wine A",
     wineryId: 1,
     distanceKm: 4.2,
     vintage: 2021,
@@ -12,6 +13,7 @@ const rows = [
     priceRangeMax: 22,
   },
   {
+    name: "Wine B",
     wineryId: 2,
     distanceKm: 12.8,
     vintage: 2022,
@@ -21,6 +23,7 @@ const rows = [
     priceRangeMax: 14,
   },
   {
+    name: "Wine C",
     wineryId: 1,
     distanceKm: 8.1,
     vintage: 2020,

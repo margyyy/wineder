@@ -25,6 +25,7 @@ export type DiscoverableWine = {
   distanceKm: number;
   score: number;
   imageUrl: string;
+  isVerified: boolean;
 };
 
 export async function listDiscoverableWines(input: {
@@ -61,7 +62,8 @@ export async function listDiscoverableWines(input: {
     priceRangeMax: wine.priceRangeMax,
     distanceKm: distanceKm(input.userLocation, { lat: wine.winery.lat, lng: wine.winery.lng }),
     score: scoreByWineId[wine.id] ?? 0,
-    imageUrl: `/images/wine-fallback.svg?slug=${encodeURIComponent(wine.slug)}`,
+    imageUrl: "/images/wine-card.png",
+    isVerified: wine.isVerified,
   }));
 
   const filtered = applyDiscoveryFilters(projected, input.filters);
@@ -96,6 +98,21 @@ export async function listWineAvailabilityPoints(slug: string) {
       vintage: wine.vintage,
       productionDescription: wine.productionDescription,
       isVerified: wine.isVerified,
+      imageUrl: "/images/wine-card.png",
+      wineryName: wine.winery.name,
+      wineryWebsite: wine.winery.website,
+      dolcezza: wine.dolcezza,
+      acidita: wine.acidita,
+      tannini: wine.tannini,
+      corpo: wine.corpo,
+      alcol: wine.alcol,
+      effervescenza: wine.effervescenza,
+      fruttato: wine.fruttato,
+      floreale: wine.floreale,
+      speziato: wine.speziato,
+      terroso: wine.terroso,
+      legnoso: wine.legnoso,
+      minerale: wine.minerale,
       additives: wine.wineAdditives.map((entry) => ({
         id: entry.additive.id,
         name: entry.additive.name,
@@ -110,6 +127,13 @@ export async function listWineAvailabilityPoints(slug: string) {
         lng: wine.winery.lng,
         category: wine.winery.category,
       },
+      ...wine.workshopWines.map((ww) => ({
+        id: ww.workshop.id + 10000,
+        name: ww.workshop.name,
+        lat: ww.workshop.lat,
+        lng: ww.workshop.lng,
+        category: ww.workshop.category,
+      })),
     ],
   };
 }

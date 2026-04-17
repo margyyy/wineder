@@ -1,9 +1,11 @@
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { WineFeedbackToggle } from "../../../../components/matching/WineFeedbackToggle";
-import { WineAvailabilityMap } from "../../../../components/maps/WineAvailabilityMap";
-import { WineAdditiveChips } from "../../../../components/wine/WineAdditiveChips";
+import { WineLocationPicker } from "../../../../components/wine/WineLocationPicker";
+import { WineAdditiveDetail } from "../../../../components/wine/WineAdditiveDetail";
 import { WineVerifiedBadge } from "../../../../components/wine/WineVerifiedBadge";
+import { WineSensoryProfile } from "../../../../components/wine/WineSensoryProfile";
+import { WineProductionAccordion } from "../../../../components/wine/WineProductionAccordion";
 import { listWineAvailabilityPoints } from "../../../../lib/data/repositories/discoveryRepository";
 
 type Props = {
@@ -24,23 +26,46 @@ export default async function WineDetailPage({ params }: Props) {
   return (
     <main>
       <section className="max-w-3xl mx-auto px-4 py-6 md:py-10 grid gap-5">
+        {/* Wine hero image */}
+        <div className="rounded-2xl overflow-hidden h-56 md:h-72 bg-vm-bg -mx-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={availability.wine.imageUrl}
+            alt={availability.wine.name}
+            className="w-full h-full object-cover"
+          />
+        </div>
+
         <h1 className="mt-0 text-2xl md:text-3xl font-bold">{availability.wine.name}</h1>
         <p className="m-0 text-vm-muted">
-          {availability.wine.color.toUpperCase()} · {availability.wine.alcoholPercent.toFixed(1)}% · {availability.wine.vintage}
+          {availability.wine.wineryName} · {availability.wine.color.toUpperCase()} · {availability.wine.alcoholPercent.toFixed(1)}% · {availability.wine.vintage}
         </p>
 
-        <WineVerifiedBadge isVerified={availability.wine.isVerified} />
+        <div className="flex items-center gap-3 flex-wrap">
+          <WineVerifiedBadge isVerified={availability.wine.isVerified} />
+          {availability.wine.wineryWebsite && (
+            <a
+              href={availability.wine.wineryWebsite}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-vm-accent hover:underline"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              Scopri la cantina
+            </a>
+          )}
+        </div>
 
         {availability.wine.productionDescription ? (
-          <section className="grid gap-2">
-            <h2 className="m-0 text-lg font-bold">Produzione</h2>
-            <p className="m-0">{availability.wine.productionDescription}</p>
-          </section>
+          <WineProductionAccordion description={availability.wine.productionDescription} />
         ) : null}
 
         <section className="grid gap-3">
           <h2 className="m-0 text-lg font-bold">Additivi dichiarati</h2>
-          <WineAdditiveChips additives={availability.wine.additives} />
+          <WineAdditiveDetail additives={availability.wine.additives} />
         </section>
 
         {sessionId ? (
@@ -51,9 +76,11 @@ export default async function WineDetailPage({ params }: Props) {
           </p>
         )}
 
+        <WineSensoryProfile wine={availability.wine} />
+
         <section className="grid gap-3">
           <h2 className="m-0 text-lg font-bold">Dove trovarlo</h2>
-          <WineAvailabilityMap points={availability.points} />
+          <WineLocationPicker points={availability.points} />
         </section>
       </section>
     </main>

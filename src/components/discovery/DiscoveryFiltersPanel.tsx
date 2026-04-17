@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { SlidersHorizontal, X } from "lucide-react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { SlidersHorizontal, X, Search } from "lucide-react";
 
 type Props = {
   query: URLSearchParams;
@@ -11,18 +11,27 @@ type Props = {
 };
 
 const COLOR_OPTIONS = [
-  { value: "", label: "Tutti" },
+  { value: "", label: "Tutti i colori" },
   { value: "red", label: "Rosso", dot: "bg-red-700" },
   { value: "white", label: "Bianco", dot: "bg-amber-100 border border-amber-400" },
   { value: "rose", label: "Rosato", dot: "bg-pink-400" },
 ];
 
+const ALCOHOL_OPTIONS = [
+  { value: "", label: "Qualsiasi gradazione" },
+  { value: "low-alcol", label: "Low Alcol ≤7%" },
+  { value: "no-alcol", label: "No Alcol" },
+];
+
 export function DiscoveryFiltersPanel({ query, wineries, onPatch, onReset }: Props) {
   const [advancedOpen, setAdvancedOpen] = useState(false);
+  const [searchDraft, setSearchDraft] = useState(query.get("search") ?? "");
   const panelRef = useRef<HTMLDivElement>(null);
 
-  const km = query.get("maxDistanceKm") || "20";
+  const MAX_KM = 60;
+  const km = query.get("maxDistanceKm") || String(MAX_KM);
   const color = query.get("color") || "";
+  const alcoholCategory = query.get("alcoholCategory") || "";
 
   const advancedCount = [
     query.get("wineryId"),
@@ -44,11 +53,51 @@ export function DiscoveryFiltersPanel({ query, wineries, onPatch, onReset }: Pro
     return () => document.removeEventListener("mousedown", handleClick);
   }, [advancedOpen]);
 
+  // Sync search draft when URL param changes externally (e.g. reset)
+  useEffect(() => {
+    setSearchDraft(query.get("search") ?? "");
+  }, [query]);
+
+  const debouncedSearch = useCallback(
+    (() => {
+      let timer: ReturnType<typeof setTimeout>;
+      return (value: string) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          onPatch({ search: value.trim() || undefined });
+        }, 250);
+      };
+    })(),
+    [onPatch],
+  );
+
+  function handleSearchSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    onPatch({ search: searchDraft.trim() || undefined });
+  }
+
   return (
     <div
-      className="bg-vm-surface border border-vm-border rounded-2xl p-4 md:p-5"
+      className="bg-vm-surface border border-vm-border rounded-2xl p-4 md:p-5 grid gap-4"
       style={{ boxShadow: "var(--vm-shadow-card)" }}
     >
+      {/* Search bar */}
+      <form onSubmit={handleSearchSubmit} className="relative">
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-vm-muted pointer-events-none" />
+        <input
+          type="search"
+          placeholder="Cerca vino per nome…"
+          value={searchDraft}
+          onChange={(e) => {
+            setSearchDraft(e.target.value);
+            debouncedSearch(e.target.value);
+          }}
+          onBlur={() => onPatch({ search: searchDraft.trim() || undefined })}
+          className="!pl-9 !mt-0 !rounded-xl !text-sm"
+          style={{ marginTop: 0 }}
+        />
+      </form>
+
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         {/* Distance slider */}
         <div className="flex-1 min-w-[160px] max-w-xs">
@@ -56,15 +105,19 @@ export function DiscoveryFiltersPanel({ query, wineries, onPatch, onReset }: Pro
             <span className="text-xs font-bold uppercase tracking-widest text-vm-muted">
               📍 Distanza
             </span>
-            <span className="text-sm font-bold text-vm-ink tabular-nums">{km} km</span>
+            <span className="text-sm font-bold text-vm-ink tabular-nums">
+              {Number(km) >= MAX_KM ? "Qualsiasi" : `${km} km`}
+            </span>
           </div>
           <input
             type="range"
             min={2}
-            max={60}
+            max={MAX_KM}
             step={1}
             value={km}
-            onChange={(e) => onPatch({ maxDistanceKm: e.target.value })}
+            onChange={(e) =>
+              onPatch({ maxDistanceKm: Number(e.target.value) >= MAX_KM ? undefined : e.target.value })
+            }
           />
         </div>
 
@@ -84,37 +137,57 @@ export function DiscoveryFiltersPanel({ query, wineries, onPatch, onReset }: Pro
                     : "bg-white text-vm-ink border-vm-border hover:border-vm-accent/60",
                 ].join(" ")}
               >
-                {opt.dot && (
-                  <span className={`w-2 h-2 rounded-full flex-shrink-0 ${opt.dot}`} />
-                )}
+                {opt.dot && <span className={`w-2 h-2 rounded-full flex-shrink-0 ${opt.dot}`} />}
                 {opt.label}
               </button>
             );
           })}
         </div>
+      </div>
 
-        {/* Advanced filters button */}
-        <div className="relative flex-shrink-0" ref={panelRef}>
+      {/* Alcohol category pills */}
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="text-xs font-bold uppercase tracking-widest text-vm-muted">Alcol:</span>
+        {ALCOHOL_OPTIONS.map((opt) => {
+          const active = alcoholCategory === opt.value;
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => onPatch({ alcoholCategory: opt.value || undefined })}
+              className={[
+                "min-h-[32px] px-3 rounded-full text-xs font-semibold transition-all cursor-pointer border-2",
+                active
+                  ? "bg-vm-accent2 text-white border-vm-accent2"
+                  : "bg-white text-vm-ink border-vm-border hover:border-vm-accent2/60",
+              ].join(" ")}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
+
+        {/* Advanced filters button — right-aligned */}
+        <div className="relative ml-auto flex-shrink-0" ref={panelRef}>
           <button
             type="button"
             onClick={() => setAdvancedOpen((prev) => !prev)}
             className={[
-              "min-h-[36px] px-4 rounded-full text-sm font-bold flex items-center gap-2 border-2 transition-all cursor-pointer whitespace-nowrap",
+              "min-h-[32px] px-4 rounded-full text-xs font-bold flex items-center gap-2 border-2 transition-all cursor-pointer whitespace-nowrap",
               advancedOpen || advancedCount > 0
                 ? "bg-vm-ink text-white border-vm-ink"
                 : "bg-white text-vm-ink border-vm-border hover:border-vm-ink/40",
             ].join(" ")}
           >
-            <SlidersHorizontal size={14} />
-            Filtri
+            <SlidersHorizontal size={13} />
+            Filtri avanzati
             {advancedCount > 0 && (
-              <span className="bg-vm-accent text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center ml-0.5">
+              <span className="bg-vm-accent text-white text-xs font-bold w-4 h-4 rounded-full flex items-center justify-center">
                 {advancedCount}
               </span>
             )}
           </button>
 
-          {/* Dropdown panel */}
           {advancedOpen && (
             <div
               className="absolute right-0 top-full mt-2 w-72 bg-vm-surface border border-vm-border rounded-2xl p-5 grid gap-4 z-30"
@@ -139,9 +212,7 @@ export function DiscoveryFiltersPanel({ query, wineries, onPatch, onReset }: Pro
                 >
                   <option value="">Tutte le cantine</option>
                   {wineries.map((w) => (
-                    <option key={w.id} value={String(w.id)}>
-                      {w.name}
-                    </option>
+                    <option key={w.id} value={String(w.id)}>{w.name}</option>
                   ))}
                 </select>
               </label>
@@ -213,9 +284,7 @@ export function DiscoveryFiltersPanel({ query, wineries, onPatch, onReset }: Pro
                   type="checkbox"
                   className="w-4 h-4 accent-[var(--vm-accent)] flex-shrink-0"
                   checked={query.get("useMatchFilter") !== "false"}
-                  onChange={(e) =>
-                    onPatch({ useMatchFilter: e.target.checked ? "true" : "false" })
-                  }
+                  onChange={(e) => onPatch({ useMatchFilter: e.target.checked ? "true" : "false" })}
                   style={{ width: 18, height: 18 }}
                 />
                 Ordina per match
@@ -223,10 +292,7 @@ export function DiscoveryFiltersPanel({ query, wineries, onPatch, onReset }: Pro
 
               <button
                 type="button"
-                onClick={() => {
-                  onReset();
-                  setAdvancedOpen(false);
-                }}
+                onClick={() => { onReset(); setAdvancedOpen(false); }}
                 className="min-h-[40px] rounded-xl border-2 border-vm-border text-vm-muted text-sm font-semibold hover:border-vm-accent/60 hover:text-vm-ink transition-colors cursor-pointer"
               >
                 Reset filtri

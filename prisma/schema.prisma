@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum FeedbackType {
@@ -19,6 +20,7 @@ model Winery {
   lat      Float
   lng      Float
   category String
+  website  String @default("")
 
   wines     Wine[]
   workshops Workshop[]
@@ -40,6 +42,7 @@ model Wine {
   priceRangeMax         Float
   productionDescription String?
   isVerified            Boolean @default(false)
+  imageUrl              String  @default("")
 
   dolcezza      Float @default(0)
   acidita       Float @default(0)

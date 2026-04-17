@@ -5,7 +5,7 @@ export default function QuestionnairePage() {
     <main className="min-h-[calc(100vh-56px)] bg-vm-bg flex flex-col">
       {/* Announcement bar */}
       <div className="bg-vm-accent text-white text-center py-2 text-xs font-semibold tracking-widest uppercase">
-        Scopri il vino perfetto vicino a te — gratis, in 2 minuti
+        Finally, a match that doesn&apos;t ghost you
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-10">

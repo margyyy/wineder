@@ -14,6 +14,16 @@ export type MatchingQuestion = {
 
 export const questionBank: MatchingQuestion[] = [
   {
+    id: "occasion",
+    label: "In che occasione ti piace bere?",
+    options: [
+      { id: "aperitivo", label: "Aperitivo con amici", weights: { effervescenza: 0.5, acidita: 0.4, corpo: -0.2, fruttato: 0.3 } },
+      { id: "cena", label: "Cena in compagnia", weights: { corpo: 0.5, tannini: 0.3, speziato: 0.2, alcol: 0.2 } },
+      { id: "relax", label: "Momento di relax in solitudine", weights: { dolcezza: 0.3, floreale: 0.4, corpo: -0.1, minerale: 0.3 } },
+      { id: "brindisi", label: "Brindisi e celebrazioni", weights: { effervescenza: 0.7, fruttato: 0.4, dolcezza: 0.2, acidita: 0.2 } },
+    ],
+  },
+  {
     id: "coffee-style",
     label: "Come preferisci il caffe?",
     options: [
@@ -59,12 +69,12 @@ export const questionBank: MatchingQuestion[] = [
     ],
   },
   {
-    id: "occasion",
-    label: "Per un calice serale cosa cerchi?",
+    id: "texture-preference",
+    label: "Quale sensazione preferisci al palato?",
     options: [
-      { id: "light-easy", label: "Leggero e scorrevole", weights: { corpo: -0.4, alcol: -0.2, acidita: 0.3, fruttato: 0.3 } },
-      { id: "structured", label: "Strutturato e intenso", weights: { corpo: 0.8, alcol: 0.6, tannini: 0.6, legnoso: 0.3 } },
-      { id: "soft-round", label: "Morbido e avvolgente", weights: { dolcezza: 0.4, corpo: 0.4, tannini: -0.2, floreale: 0.2 } },
+      { id: "light-fresh", label: "Leggero e fresco", weights: { corpo: -0.4, alcol: -0.3, acidita: 0.4, fruttato: 0.3 } },
+      { id: "full-round", label: "Morbido e avvolgente", weights: { corpo: 0.6, dolcezza: 0.4, tannini: -0.2, floreale: 0.3 } },
+      { id: "bold-intense", label: "Potente e persistente", weights: { corpo: 0.8, alcol: 0.5, tannini: 0.6, legnoso: 0.3 } },
     ],
   },
 ];

@@ -17,6 +17,7 @@ export type DiscoveryCardWine = {
   distanceKm: number;
   score: number;
   imageUrl: string;
+  isVerified: boolean;
 };
 
 type Props = {
@@ -41,7 +42,7 @@ export function WineResultCard({ wine, showScore }: Props) {
       style={{ boxShadow: "var(--vm-shadow-card)" }}
     >
       {/* Image */}
-      <div className="relative overflow-hidden h-44 bg-vm-bg flex-shrink-0">
+      <div className="relative overflow-hidden h-64 bg-vm-bg flex-shrink-0">
         <img
           src={imageSrc}
           alt={wine.name}
@@ -54,9 +55,20 @@ export function WineResultCard({ wine, showScore }: Props) {
         >
           {colorInfo.label}
         </span>
+        {/* Verified badge */}
+        {wine.isVerified && (
+          <span className="absolute top-3 right-3 flex items-center gap-1 text-xs font-bold px-2 py-1 rounded-full bg-vm-accent2/90 text-white backdrop-blur-sm">
+            ✓ Verificato
+          </span>
+        )}
         {/* Match score badge */}
-        {showScore && (
+        {showScore && !wine.isVerified && (
           <span className="absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded-full bg-vm-accent text-white">
+            {Math.round(wine.score * 100)}% match
+          </span>
+        )}
+        {showScore && wine.isVerified && (
+          <span className="absolute bottom-3 right-3 text-xs font-bold px-2.5 py-1 rounded-full bg-vm-accent text-white">
             {Math.round(wine.score * 100)}% match
           </span>
         )}

@@ -5,9 +5,10 @@ export async function listWines() {
     include: {
       winery: true,
       wineAdditives: {
-        include: {
-          additive: true,
-        },
+        include: { additive: true },
+      },
+      workshopWines: {
+        include: { workshop: true },
       },
     },
     orderBy: { name: "asc" },
@@ -20,9 +21,10 @@ export async function listWinesByWinery(wineryId: number) {
     include: {
       winery: true,
       wineAdditives: {
-        include: {
-          additive: true,
-        },
+        include: { additive: true },
+      },
+      workshopWines: {
+        include: { workshop: true },
       },
     },
     orderBy: { name: "asc" },

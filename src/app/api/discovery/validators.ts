@@ -1,15 +1,12 @@
 import type { DiscoveryFilters } from "../../../lib/domain/discovery/filterEngine";
 
 const VALID_COLORS = new Set(["red", "white", "rose"]);
+const VALID_ALCOHOL_CATS = new Set(["no-alcol", "low-alcol"]);
 
 function parseNumber(raw: string | null, key: string) {
-  if (raw === null || raw.length === 0) {
-    return undefined;
-  }
+  if (raw === null || raw.length === 0) return undefined;
   const value = Number(raw);
-  if (!Number.isFinite(value)) {
-    throw new Error(`Invalid numeric value for ${key}`);
-  }
+  if (!Number.isFinite(value)) throw new Error(`Invalid numeric value for ${key}`);
   return value;
 }
 
@@ -24,9 +21,15 @@ export function parseDiscoveryQuery(searchParams: URLSearchParams): DiscoveryQue
   const useMatchFilter = useMatchRaw ? useMatchRaw !== "false" : true;
 
   const color = searchParams.get("color") ?? undefined;
-  if (color && !VALID_COLORS.has(color)) {
-    throw new Error("Invalid color filter");
+  if (color && !VALID_COLORS.has(color)) throw new Error("Invalid color filter");
+
+  const alcoholCategoryRaw = searchParams.get("alcoholCategory") ?? undefined;
+  if (alcoholCategoryRaw && !VALID_ALCOHOL_CATS.has(alcoholCategoryRaw)) {
+    throw new Error("Invalid alcoholCategory filter");
   }
+  const alcoholCategory = alcoholCategoryRaw as DiscoveryFilters["alcoholCategory"];
+
+  const search = searchParams.get("search") ?? undefined;
 
   const lat = parseNumber(searchParams.get("lat"), "lat");
   const lng = parseNumber(searchParams.get("lng"), "lng");
@@ -40,6 +43,8 @@ export function parseDiscoveryQuery(searchParams: URLSearchParams): DiscoveryQue
     color,
     priceMin: parseNumber(searchParams.get("priceMin"), "priceMin"),
     priceMax: parseNumber(searchParams.get("priceMax"), "priceMax"),
+    alcoholCategory,
+    search: search?.trim() || undefined,
   };
 
   if (typeof filters.maxDistanceKm === "number" && filters.maxDistanceKm < 0) {

@@ -4,8 +4,9 @@ import "leaflet/dist/leaflet.css";
 import { NavBar } from "../components/NavBar";
 
 export const metadata: Metadata = {
-  title: "VinoMatch Local MVP",
-  description: "Trova vini vicino a te con un questionario rapido",
+  title: "WINEDER",
+  description: "Trova i vini fatti per te — in 2 minuti",
+  icons: { icon: "/favicon.svg" },
 };
 
 export default function RootLayout({

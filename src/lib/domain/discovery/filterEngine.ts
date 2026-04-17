@@ -7,6 +7,8 @@ export type DiscoveryFilters = {
   color?: string;
   priceMin?: number;
   priceMax?: number;
+  alcoholCategory?: "no-alcol" | "low-alcol";
+  search?: string;
 };
 
 export type FilterableDiscoveryRow = {
@@ -17,6 +19,7 @@ export type FilterableDiscoveryRow = {
   color: string;
   priceRangeMin: number;
   priceRangeMax: number;
+  name: string;
 };
 
 export function applyDiscoveryFilters<T extends FilterableDiscoveryRow>(
@@ -33,6 +36,14 @@ export function applyDiscoveryFilters<T extends FilterableDiscoveryRow>(
     }
 
     if (typeof filters.vintage === "number" && item.vintage !== filters.vintage) {
+      return false;
+    }
+
+    if (filters.alcoholCategory === "no-alcol" && item.alcoholPercent > 0.5) {
+      return false;
+    }
+
+    if (filters.alcoholCategory === "low-alcol" && item.alcoholPercent > 7) {
       return false;
     }
 
@@ -54,6 +65,13 @@ export function applyDiscoveryFilters<T extends FilterableDiscoveryRow>(
 
     if (typeof filters.priceMax === "number" && item.priceRangeMin > filters.priceMax) {
       return false;
+    }
+
+    if (typeof filters.search === "string" && filters.search.length > 0) {
+      const q = filters.search.toLowerCase();
+      if (!item.name.toLowerCase().includes(q)) {
+        return false;
+      }
     }
 
     return true;
