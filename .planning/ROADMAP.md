@@ -13,11 +13,11 @@
 
 | #   | Phase                           | Goal                                                                       | Requirements                | Success Criteria |
 | --- | ------------------------------- | -------------------------------------------------------------------------- | --------------------------- | ---------------- |
-| 1   | Foundation and Local Data       | Create modular app skeleton and reliable SQLite catalog                    | DATA-\*                     | 5                |
-| 2   | Questionnaire and Matching Core | Deliver short onboarding and deterministic ranking with feedback loop      | MATCH-\*                    | 5                |
-| 3   | Discovery UX and Wine Detail    | Show nearby results with filters, cards, maps, and detail flow             | DISC-\*, WINE-01..03        | 5                |
+| 1   | Foundation and Local Data       | Create modular app skeleton and reliable SQLite catalog                    | DATA-*                      | 5                |
+| 2   | Questionnaire and Matching Core | Deliver short onboarding and deterministic ranking with feedback loop      | MATCH-*                     | 5                |
+| 3   | Discovery UX and Wine Detail    | Show nearby results with filters, cards, maps, and detail flow            | DISC-*, WINE-01..03         | 5                |
 | 4   | Winery and Workshop Management  | Add management routes, verification logic, production/additives visibility | MGMT-_, VERI-_, WINE-04..05 | 5                |
-| 5   | Kiosk and Conversion Flow       | Deliver kiosk mode with QR handoff to mobile and stability polish          | KIOSK-\*                    | 5                |
+| 5   | Kiosk and Conversion Flow       | Deliver kiosk mode with QR handoff to mobile and stability polish          | KIOSK-*                     | 5                |
 
 ## Phase Details
 
@@ -93,6 +93,14 @@ Plans:
 **Requirements:**
 MGMT-01, MGMT-02, MGMT-03, MGMT-04, MGMT-05, MGMT-06, MGMT-07, VERI-01, VERI-02, VERI-03, WINE-04, WINE-05
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 04-01-PLAN.md - Schema and verification domain foundation for management data
+- [ ] 04-02-PLAN.md - Management APIs for workshops, cantina, and azienda
+- [ ] 04-03-PLAN.md - Management pages/forms for workshop and entity operations
+- [ ] 04-04-PLAN.md - Public winery profile and wine transparency UI integration
+
 **UI hint:** yes
 
 **Success Criteria:**
@@ -129,4 +137,4 @@ KIOSK-01, KIOSK-02, KIOSK-03, KIOSK-04
 
 ---
 
-_Last updated: 2026-04-17 after phase 3 execution_
+_Last updated: 2026-04-17 after phase 4 planning_
