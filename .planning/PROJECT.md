@@ -1,8 +1,8 @@
-# VinoMatch Local MVP
+# WINEDER
 
 ## What This Is
 
-VinoMatch Local MVP e una web app Next.js per aiutare utenti 18-35 a trovare vini vicini in base a un questionario iniziale e a un algoritmo di matching progressivo. L'app mostra risultati geolocalizzati, filtri semplici e schede vino con informazioni utili, mappa e dati verificati dalle cantine quando disponibili. Include anche una modalita kiosk web per tablet con conversione via QR code verso mobile.
+WINEDER e una web app Next.js per aiutare utenti 18-35 a trovare vini vicini in base a un questionario iniziale e a un algoritmo di matching progressivo. L'app mostra risultati geolocalizzati, filtri semplici e schede vino con informazioni utili, mappa e dati verificati dalle cantine quando disponibili. Include anche una modalita kiosk web per tablet con conversione via QR code verso mobile.
 
 ## Core Value
 

@@ -1,4 +1,4 @@
-# Requirements: VinoMatch Local MVP
+# Requirements: WINEDER
 
 **Defined:** 2026-04-17
 **Core Value:** Con poche domande intelligenti, l'utente trova subito vini rilevanti vicino a lui e puo continuare a scoprire in modo semplice e trasparente.

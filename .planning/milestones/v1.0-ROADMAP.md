@@ -1,6 +1,6 @@
-# Roadmap: VinoMatch Local MVP
+# Roadmap: WINEDER
 
-**Project:** VinoMatch Local MVP
+**Project:** WINEDER
 **Generated:** 2026-04-17
 **Granularity:** Coarse
 **Execution:** Parallel where safe
