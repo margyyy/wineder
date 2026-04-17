@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "../styles/tokens.css";
 import "leaflet/dist/leaflet.css";
+import { NavBar } from "../components/NavBar";
 
 export const metadata: Metadata = {
   title: "VinoMatch Local MVP",
-  description: "Foundation app shell for local wine matching MVP",
+  description: "Trova vini vicino a te con un questionario rapido",
 };
 
 export default function RootLayout({
@@ -14,7 +15,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="it">
-      <body style={{ fontFamily: '"Space Grotesk", "Manrope", sans-serif' }}>
+      <body>
+        <NavBar />
         {children}
       </body>
     </html>

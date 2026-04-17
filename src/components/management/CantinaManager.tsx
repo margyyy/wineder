@@ -29,7 +29,10 @@ export function CantinaManager({ slug }: Props) {
   const [selectedWineIds, setSelectedWineIds] = useState<number[]>([]);
 
   const workshopSlug = `${slug}-workshop`;
-  const workshop = useMemo(() => data?.winery.workshops.find((item) => item.slug === workshopSlug), [data, workshopSlug]);
+  const workshop = useMemo(
+    () => data?.winery.workshops.find((item) => item.slug === workshopSlug),
+    [data, workshopSlug],
+  );
 
   useEffect(() => {
     async function load() {
@@ -41,7 +44,9 @@ export function CantinaManager({ slug }: Props) {
       }
 
       setData(payload);
-      setHistoryText(payload.winery.workshops.find((item) => item.slug === workshopSlug)?.historyText ?? "");
+      setHistoryText(
+        payload.winery.workshops.find((item) => item.slug === workshopSlug)?.historyText ?? "",
+      );
       setSelectedWineIds(
         payload.winery.workshops
           .find((item) => item.slug === workshopSlug)
@@ -59,10 +64,7 @@ export function CantinaManager({ slug }: Props) {
     const response = await fetch(`/api/manage/cantina/${slug}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        profile: { historyText },
-        workshop: { wineIds: selectedWineIds },
-      }),
+      body: JSON.stringify({ profile: { historyText }, workshop: { wineIds: selectedWineIds } }),
     });
 
     const payload = (await response.json()) as CantinaPayload & { error?: string };
@@ -81,13 +83,7 @@ export function CantinaManager({ slug }: Props) {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        wines: [
-          {
-            wineId: wine.id,
-            productionDescription: wine.productionDescription ?? "",
-            additiveIds,
-          },
-        ],
+        wines: [{ wineId: wine.id, productionDescription: wine.productionDescription ?? "", additiveIds }],
       }),
     });
 
@@ -102,63 +98,68 @@ export function CantinaManager({ slug }: Props) {
   }
 
   if (!data) {
-    return <p style={{ margin: 0 }}>Caricamento dati cantina...</p>;
+    return <p className="m-0 text-vm-muted animate-pulse">Caricamento dati cantina...</p>;
   }
 
   return (
-    <section style={{ display: "grid", gap: 20 }}>
-      <form onSubmit={saveProfile} style={{ display: "grid", gap: 10 }}>
-        <h2 style={{ margin: 0 }}>Profilo cantina</h2>
+    <section className="grid gap-6">
+      <form onSubmit={saveProfile} className="grid gap-4">
+        <h2 className="m-0 text-xl font-bold">Profilo cantina</h2>
         <label>
           Storytelling
-          <textarea value={historyText} onChange={(event) => setHistoryText(event.target.value)} rows={4} />
+          <textarea value={historyText} onChange={(e) => setHistoryText(e.target.value)} rows={4} />
         </label>
-        <fieldset style={{ display: "grid", gap: 6 }}>
-          <legend>Vini mostrati nel profilo pubblico</legend>
-          {data.winery.wines.map((wine) => {
-            const checked = selectedWineIds.includes(wine.id);
-            return (
-              <label key={wine.id} style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <input
-                  type="checkbox"
-                  checked={checked}
-                  onChange={(event) => {
-                    setSelectedWineIds((prev) => {
-                      if (event.target.checked) {
-                        return [...prev, wine.id];
-                      }
-                      return prev.filter((id) => id !== wine.id);
-                    });
-                  }}
-                />
-                {wine.name}
-              </label>
-            );
-          })}
+
+        <fieldset className="border border-vm-border rounded-xl p-4 grid gap-3">
+          <legend className="px-1 font-semibold text-sm">Vini mostrati nel profilo pubblico</legend>
+          {data.winery.wines.map((wine) => (
+            <label key={wine.id} className="flex items-center gap-3 min-h-[44px] cursor-pointer text-sm">
+              <input
+                type="checkbox"
+                className="w-4 h-4 accent-[var(--vm-accent)]"
+                checked={selectedWineIds.includes(wine.id)}
+                onChange={(e) => {
+                  setSelectedWineIds((prev) =>
+                    e.target.checked ? [...prev, wine.id] : prev.filter((id) => id !== wine.id),
+                  );
+                }}
+              />
+              {wine.name}
+            </label>
+          ))}
         </fieldset>
-        <button type="submit">Salva profilo</button>
+
+        <button
+          type="submit"
+          className="min-h-[48px] px-6 rounded-xl bg-vm-accent text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+        >
+          Salva profilo
+        </button>
       </form>
 
-      <div style={{ display: "grid", gap: 14 }}>
-        <h2 style={{ margin: 0 }}>Schede vino</h2>
+      <div className="grid gap-4">
+        <h2 className="m-0 text-xl font-bold">Schede vino</h2>
         {data.winery.wines.map((wine) => (
-          <article key={wine.id} style={{ border: "1px solid var(--vm-border)", borderRadius: 12, padding: 12, display: "grid", gap: 8 }}>
-            <strong>{wine.name}</strong>
+          <article
+            key={wine.id}
+            className="border border-vm-border rounded-xl p-4 grid gap-3 bg-vm-surface"
+          >
+            <strong className="font-bold">{wine.name}</strong>
             <label>
               Produzione
               <textarea
                 value={wine.productionDescription ?? ""}
                 rows={3}
-                onChange={(event) => {
+                onChange={(e) => {
                   setData((prev) => {
-                    if (!prev) {
-                      return prev;
-                    }
+                    if (!prev) return prev;
                     return {
                       winery: {
                         ...prev.winery,
                         wines: prev.winery.wines.map((item) =>
-                          item.id === wine.id ? { ...item, productionDescription: event.target.value } : item,
+                          item.id === wine.id
+                            ? { ...item, productionDescription: e.target.value }
+                            : item,
                         ),
                       },
                     };
@@ -170,24 +171,26 @@ export function CantinaManager({ slug }: Props) {
               Additivi (ID separati da virgola)
               <input
                 defaultValue={wine.wineAdditives.map((item) => item.additive.id).join(",")}
-                onBlur={(event) => {
-                  const ids = event.target.value
+                onBlur={(e) => {
+                  const ids = e.target.value
                     .split(",")
-                    .map((value) => Number(value.trim()))
-                    .filter((value) => Number.isFinite(value));
+                    .map((v) => Number(v.trim()))
+                    .filter((v) => Number.isFinite(v));
                   void saveWine(wine, ids);
                 }}
               />
             </label>
-            <small style={{ color: "var(--vm-muted)" }}>
+            <small className="text-vm-muted text-xs">
               Verificato: {wine.isVerified ? "SI" : "NO"}
             </small>
           </article>
         ))}
       </div>
 
-      {workshop ? <p style={{ margin: 0, color: "var(--vm-muted)" }}>Workshop collegato: {workshop.slug}</p> : null}
-      {status ? <p style={{ margin: 0, color: "var(--vm-muted)" }}>{status}</p> : null}
+      {workshop && (
+        <p className="m-0 text-vm-muted text-sm">Workshop collegato: {workshop.slug}</p>
+      )}
+      {status && <p className="m-0 text-vm-muted text-sm">{status}</p>}
     </section>
   );
 }

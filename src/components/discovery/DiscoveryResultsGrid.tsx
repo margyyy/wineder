@@ -46,9 +46,7 @@ export function DiscoveryResultsGrid({ hasSession }: Props) {
         const body = (await response.json()) as ApiResponse;
         setData(body);
       } catch (fetchError) {
-        if (fetchError instanceof Error && fetchError.name === "AbortError") {
-          return;
-        }
+        if (fetchError instanceof Error && fetchError.name === "AbortError") return;
         setError(fetchError instanceof Error ? fetchError.message : "Errore imprevisto");
       } finally {
         setLoading(false);
@@ -87,35 +85,42 @@ export function DiscoveryResultsGrid({ hasSession }: Props) {
   }, [data]);
 
   return (
-    <section style={{ display: "grid", gap: 16 }}>
-      {!hasSession ? (
-        <p style={{ margin: 0, color: "var(--vm-muted)" }}>
-          Nessuna sessione attiva: completa prima il questionario.
-        </p>
-      ) : null}
+    <section className="grid gap-4 md:grid-cols-[280px_1fr] md:items-start">
+      {/* Filters — sidebar on md+, collapsible on mobile */}
+      <div className="md:sticky md:top-20">
+        <DiscoveryFiltersPanel query={query} wineries={wineries} onPatch={patchQuery} onReset={resetFilters} />
+      </div>
 
-      <DiscoveryFiltersPanel query={query} wineries={wineries} onPatch={patchQuery} onReset={resetFilters} />
-
-      {loading ? <p style={{ margin: 0 }}>Caricamento risultati...</p> : null}
-      {error ? <p style={{ margin: 0, color: "#b00020" }}>{error}</p> : null}
-
-      {!loading && !error ? (
-        <>
-          <p style={{ margin: 0, color: "var(--vm-muted)" }}>
-            {data?.count ?? 0} vini trovati {data?.useMatchFilter ? "(ordinati per match)" : "(ordinati per distanza)"}
+      {/* Results */}
+      <div className="grid gap-4">
+        {!hasSession && (
+          <p className="m-0 text-vm-muted">
+            Nessuna sessione attiva: completa prima il questionario.
           </p>
+        )}
 
-          {data?.wines.length ? (
-            <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
-              {data.wines.map((wine) => (
-                <WineResultCard key={wine.id} wine={wine} showScore={data.useMatchFilter} />
-              ))}
-            </div>
-          ) : (
-            <p style={{ margin: 0 }}>Nessun vino trovato con i filtri correnti.</p>
-          )}
-        </>
-      ) : null}
+        {loading && <p className="m-0 text-vm-muted animate-pulse">Caricamento risultati...</p>}
+        {error && <p className="m-0 text-vm-error">{error}</p>}
+
+        {!loading && !error && (
+          <>
+            <p className="m-0 text-sm text-vm-muted">
+              {data?.count ?? 0} vini trovati{" "}
+              {data?.useMatchFilter ? "(ordinati per match)" : "(ordinati per distanza)"}
+            </p>
+
+            {data?.wines.length ? (
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                {data.wines.map((wine) => (
+                  <WineResultCard key={wine.id} wine={wine} showScore={data.useMatchFilter} />
+                ))}
+              </div>
+            ) : (
+              <p className="m-0">Nessun vino trovato con i filtri correnti.</p>
+            )}
+          </>
+        )}
+      </div>
     </section>
   );
 }

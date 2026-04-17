@@ -12,8 +12,8 @@ export default async function KioskResultsPage() {
 
   return (
     <main>
-      <section style={{ maxWidth: 1100, margin: "0 auto", padding: "24px 20px", display: "grid", gap: 14 }}>
-        <h1 style={{ margin: 0 }}>Risultati kiosk pronti</h1>
+      <section className="max-w-5xl mx-auto px-4 py-6 md:py-10 grid gap-5">
+        <h1 className="m-0 text-2xl md:text-3xl font-bold">Risultati kiosk pronti</h1>
         <KioskResultsView />
       </section>
     </main>

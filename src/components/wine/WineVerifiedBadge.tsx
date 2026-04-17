@@ -8,18 +8,7 @@ export function WineVerifiedBadge({ isVerified }: Props) {
   }
 
   return (
-    <span
-      style={{
-        display: "inline-flex",
-        width: "fit-content",
-        padding: "6px 10px",
-        borderRadius: 999,
-        background: "#ddfbe3",
-        color: "#126227",
-        fontWeight: 700,
-        fontSize: 13,
-      }}
-    >
+    <span className="inline-flex w-fit px-3 py-1.5 rounded-full bg-vm-success-bg text-vm-success-ink font-bold text-sm">
       Verificato: produzione e additivi disponibili
     </span>
   );

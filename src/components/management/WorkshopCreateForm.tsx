@@ -54,20 +54,28 @@ export function WorkshopCreateForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} style={{ display: "grid", gap: 10 }}>
+    <form onSubmit={onSubmit} className="grid gap-4">
       <label>
         Nome
-        <input value={form.name} onChange={(event) => setForm((prev) => ({ ...prev, name: event.target.value }))} required />
+        <input
+          value={form.name}
+          onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
+          required
+        />
       </label>
       <label>
         Slug
-        <input value={form.slug} onChange={(event) => setForm((prev) => ({ ...prev, slug: event.target.value }))} required />
+        <input
+          value={form.slug}
+          onChange={(e) => setForm((prev) => ({ ...prev, slug: e.target.value }))}
+          required
+        />
       </label>
       <label>
         Categoria
         <select
           value={form.category}
-          onChange={(event) => setForm((prev) => ({ ...prev, category: event.target.value as FormState["category"] }))}
+          onChange={(e) => setForm((prev) => ({ ...prev, category: e.target.value as FormState["category"] }))}
         >
           <option value="restaurant">Ristorante</option>
           <option value="bar">Bar</option>
@@ -75,24 +83,47 @@ export function WorkshopCreateForm() {
           <option value="winery">Cantina</option>
         </select>
       </label>
-      <label>
-        Latitudine
-        <input value={form.lat} onChange={(event) => setForm((prev) => ({ ...prev, lat: event.target.value }))} required />
-      </label>
-      <label>
-        Longitudine
-        <input value={form.lng} onChange={(event) => setForm((prev) => ({ ...prev, lng: event.target.value }))} required />
-      </label>
+      <div className="grid grid-cols-2 gap-3">
+        <label>
+          Latitudine
+          <input
+            value={form.lat}
+            onChange={(e) => setForm((prev) => ({ ...prev, lat: e.target.value }))}
+            required
+          />
+        </label>
+        <label>
+          Longitudine
+          <input
+            value={form.lng}
+            onChange={(e) => setForm((prev) => ({ ...prev, lng: e.target.value }))}
+            required
+          />
+        </label>
+      </div>
       <label>
         Profilo
-        <textarea value={form.profileText} onChange={(event) => setForm((prev) => ({ ...prev, profileText: event.target.value }))} />
+        <textarea
+          value={form.profileText}
+          onChange={(e) => setForm((prev) => ({ ...prev, profileText: e.target.value }))}
+          rows={3}
+        />
       </label>
       <label>
         Storia
-        <textarea value={form.historyText} onChange={(event) => setForm((prev) => ({ ...prev, historyText: event.target.value }))} />
+        <textarea
+          value={form.historyText}
+          onChange={(e) => setForm((prev) => ({ ...prev, historyText: e.target.value }))}
+          rows={3}
+        />
       </label>
-      <button type="submit">Crea workshop</button>
-      {status ? <p style={{ margin: 0, color: "var(--vm-muted)" }}>{status}</p> : null}
+      <button
+        type="submit"
+        className="min-h-[48px] px-6 rounded-xl bg-vm-accent text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+      >
+        Crea workshop
+      </button>
+      {status && <p className="m-0 text-vm-muted text-sm">{status}</p>}
     </form>
   );
 }

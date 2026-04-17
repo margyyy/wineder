@@ -47,13 +47,7 @@ export function AziendaManager({ slug }: Props) {
     const response = await fetch(`/api/manage/azienda/${slug}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        profile: {
-          profileText,
-          historyText,
-        },
-        wineIds: selectedIds,
-      }),
+      body: JSON.stringify({ profile: { profileText, historyText }, wineIds: selectedIds }),
     });
 
     const payload = (await response.json()) as Payload & { error?: string };
@@ -67,35 +61,34 @@ export function AziendaManager({ slug }: Props) {
   }
 
   if (!data) {
-    return <p style={{ margin: 0 }}>Caricamento dati azienda...</p>;
+    return <p className="m-0 text-vm-muted animate-pulse">Caricamento dati azienda...</p>;
   }
 
   return (
-    <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
-      <h2 style={{ margin: 0 }}>{data.workshop.name}</h2>
+    <form onSubmit={onSubmit} className="grid gap-4">
+      <h2 className="m-0 text-xl font-bold">{data.workshop.name}</h2>
+
       <label>
         Profilo
-        <textarea value={profileText} onChange={(event) => setProfileText(event.target.value)} rows={4} />
+        <textarea value={profileText} onChange={(e) => setProfileText(e.target.value)} rows={4} />
       </label>
       <label>
         Storia
-        <textarea value={historyText} onChange={(event) => setHistoryText(event.target.value)} rows={4} />
+        <textarea value={historyText} onChange={(e) => setHistoryText(e.target.value)} rows={4} />
       </label>
 
-      <fieldset style={{ display: "grid", gap: 6 }}>
-        <legend>Catalogo vini collegati</legend>
+      <fieldset className="border border-vm-border rounded-xl p-4 grid gap-3">
+        <legend className="px-1 font-semibold text-sm">Catalogo vini collegati</legend>
         {data.catalog.map((wine) => (
-          <label key={wine.id} style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <label key={wine.id} className="flex items-center gap-3 min-h-[44px] cursor-pointer text-sm">
             <input
               type="checkbox"
+              className="w-4 h-4 accent-[var(--vm-accent)]"
               checked={selectedIds.includes(wine.id)}
-              onChange={(event) => {
-                setSelectedIds((prev) => {
-                  if (event.target.checked) {
-                    return [...prev, wine.id];
-                  }
-                  return prev.filter((id) => id !== wine.id);
-                });
+              onChange={(e) => {
+                setSelectedIds((prev) =>
+                  e.target.checked ? [...prev, wine.id] : prev.filter((id) => id !== wine.id),
+                );
               }}
             />
             {wine.name}
@@ -103,8 +96,13 @@ export function AziendaManager({ slug }: Props) {
         ))}
       </fieldset>
 
-      <button type="submit">Salva modifiche</button>
-      {status ? <p style={{ margin: 0, color: "var(--vm-muted)" }}>{status}</p> : null}
+      <button
+        type="submit"
+        className="min-h-[48px] px-6 rounded-xl bg-vm-accent text-white font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+      >
+        Salva modifiche
+      </button>
+      {status && <p className="m-0 text-vm-muted text-sm">{status}</p>}
     </form>
   );
 }

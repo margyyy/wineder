@@ -12,10 +12,10 @@ export default async function DiscoverPage() {
 
   return (
     <main>
-      <section style={{ maxWidth: 980, margin: "0 auto", padding: "24px 16px", display: "grid", gap: 14 }}>
-        <h1 style={{ margin: 0 }}>Vini vicino a te</h1>
-        <p style={{ margin: 0, color: "var(--vm-muted)" }}>
-          Regola i filtri per trovare velocemente i vini piu adatti al tuo profilo.
+      <section className="max-w-5xl mx-auto px-4 py-6 md:py-8 grid gap-4">
+        <h1 className="m-0 text-2xl md:text-3xl font-bold">Vini vicino a te</h1>
+        <p className="m-0 text-vm-muted">
+          Regola i filtri per trovare velocemente i vini più adatti al tuo profilo.
         </p>
         <DiscoveryResultsGrid hasSession={Boolean(sessionId)} />
       </section>

@@ -46,7 +46,7 @@ export function QuestionnaireFlow({ onCompleteRedirect = "/discover" }: Props) {
   }
 
   return (
-    <section style={{ display: "grid", gap: 12 }}>
+    <section className="grid gap-4">
       <QuestionnaireProgress current={step + 1} total={questionBank.length} />
       <QuestionStepCard
         question={currentQuestion}
@@ -56,12 +56,12 @@ export function QuestionnaireFlow({ onCompleteRedirect = "/discover" }: Props) {
         }}
       />
 
-      <div style={{ display: "flex", gap: 8, justifyContent: "space-between" }}>
+      <div className="flex gap-3 justify-between">
         <button
           type="button"
           onClick={() => setStep((prev) => Math.max(0, prev - 1))}
           disabled={step === 0}
-          style={{ borderRadius: 10, border: "1px solid var(--vm-border)", padding: "10px 14px" }}
+          className="min-h-[48px] px-5 rounded-xl border border-vm-border bg-vm-surface text-vm-ink disabled:opacity-40 hover:border-vm-accent transition-colors cursor-pointer"
         >
           Indietro
         </button>
@@ -71,7 +71,7 @@ export function QuestionnaireFlow({ onCompleteRedirect = "/discover" }: Props) {
             type="button"
             disabled={!selectedOptionId}
             onClick={() => setStep((prev) => Math.min(questionBank.length - 1, prev + 1))}
-            style={{ borderRadius: 10, border: "1px solid var(--vm-border)", padding: "10px 14px" }}
+            className="min-h-[48px] px-5 rounded-xl border border-vm-border bg-vm-surface text-vm-ink disabled:opacity-40 hover:border-vm-accent transition-colors cursor-pointer"
           >
             Avanti
           </button>
@@ -80,20 +80,14 @@ export function QuestionnaireFlow({ onCompleteRedirect = "/discover" }: Props) {
             type="button"
             disabled={payloadAnswers.length !== questionBank.length}
             onClick={submitSurvey}
-            style={{
-              borderRadius: 10,
-              border: "1px solid var(--vm-accent)",
-              padding: "10px 14px",
-              background: "var(--vm-accent)",
-              color: "white",
-            }}
+            className="min-h-[48px] px-6 rounded-xl border border-vm-accent bg-vm-accent text-white font-semibold disabled:opacity-40 hover:opacity-90 transition-opacity cursor-pointer"
           >
             Calcola il mio match
           </button>
         )}
       </div>
 
-      {error ? <p style={{ color: "#b00020", margin: 0 }}>{error}</p> : null}
+      {error ? <p className="text-vm-error m-0">{error}</p> : null}
     </section>
   );
 }

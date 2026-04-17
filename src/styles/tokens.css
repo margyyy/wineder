@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+@theme {
+  --color-vm-bg: #f7f3ec;
+  --color-vm-surface: #fffdf9;
+  --color-vm-ink: #1f1a17;
+  --color-vm-muted: #6f665f;
+  --color-vm-accent: #8f1f2e;
+  --color-vm-accent2: #7d8d3f;
+  --color-vm-border: #e6d8c9;
+  --color-vm-error: #b00020;
+  --color-vm-success-bg: #ddfbe3;
+  --color-vm-success-ink: #126227;
+}
+
 :root {
   --vm-bg: #f7f3ec;
   --vm-surface: #fffdf9;
@@ -25,4 +38,34 @@ body {
 
 main {
   min-height: 100vh;
+}
+
+/* Base form element styles */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+select,
+textarea {
+  width: 100%;
+  display: block;
+  border: 1px solid var(--vm-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 1rem;
+  background: var(--vm-surface);
+  color: var(--vm-ink);
+  margin-top: 4px;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--vm-accent);
+  outline-offset: 1px;
+}
+
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--vm-ink);
 }

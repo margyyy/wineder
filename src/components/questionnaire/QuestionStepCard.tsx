@@ -10,16 +10,9 @@ type Props = {
 
 export function QuestionStepCard({ question, selectedOptionId, onSelect }: Props) {
   return (
-    <div
-      style={{
-        border: "1px solid var(--vm-border)",
-        borderRadius: 20,
-        background: "var(--vm-surface)",
-        padding: 20,
-      }}
-    >
-      <h2 style={{ marginTop: 0, marginBottom: 16, fontSize: 24 }}>{question.label}</h2>
-      <div style={{ display: "grid", gap: 10 }}>
+    <div className="border border-vm-border rounded-2xl bg-vm-surface p-5 md:p-6">
+      <h2 className="mt-0 mb-4 text-xl md:text-2xl font-bold">{question.label}</h2>
+      <div className="grid gap-3">
         {question.options.map((option) => {
           const selected = selectedOptionId === option.id;
           return (
@@ -27,15 +20,12 @@ export function QuestionStepCard({ question, selectedOptionId, onSelect }: Props
               key={option.id}
               type="button"
               onClick={() => onSelect(option.id)}
-              style={{
-                textAlign: "left",
-                borderRadius: 12,
-                border: selected ? "2px solid var(--vm-accent)" : "1px solid var(--vm-border)",
-                padding: "12px 14px",
-                background: selected ? "#f8e6e9" : "white",
-                color: "var(--vm-ink)",
-                cursor: "pointer",
-              }}
+              className={[
+                "text-left rounded-xl px-4 min-h-[48px] py-3 cursor-pointer transition-colors w-full text-vm-ink",
+                selected
+                  ? "border-2 border-vm-accent bg-[#f8e6e9]"
+                  : "border border-vm-border bg-white hover:border-vm-accent hover:bg-[#fdf4f5]",
+              ].join(" ")}
             >
               {option.label}
             </button>

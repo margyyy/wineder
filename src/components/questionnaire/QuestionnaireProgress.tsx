@@ -9,19 +9,14 @@ export function QuestionnaireProgress({ current, total }: Props) {
   const percent = Math.round((current / total) * 100);
 
   return (
-    <div style={{ marginBottom: 16 }}>
-      <p style={{ margin: "0 0 8px", fontSize: 14, color: "var(--vm-muted)" }}>
+    <div className="mb-4">
+      <p className="text-sm text-vm-muted mb-2">
         Domanda {current} di {total}
       </p>
-      <div style={{ height: 8, background: "#e8e0d8", borderRadius: 999 }}>
+      <div className="h-2 bg-[#e8e0d8] rounded-full">
         <div
-          style={{
-            width: `${percent}%`,
-            height: "100%",
-            background: "var(--vm-accent)",
-            borderRadius: 999,
-            transition: "width 160ms ease",
-          }}
+          className="h-full bg-vm-accent rounded-full transition-[width] duration-150 ease-out"
+          style={{ width: `${percent}%` }}
         />
       </div>
     </div>

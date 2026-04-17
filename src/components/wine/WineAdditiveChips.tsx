@@ -17,24 +17,18 @@ export function WineAdditiveChips({ additives }: Props) {
   const [selected, setSelected] = useState<Additive | null>(null);
 
   if (additives.length === 0) {
-    return <p style={{ margin: 0, color: "var(--vm-muted)" }}>Nessun additivo dichiarato.</p>;
+    return <p className="m-0 text-vm-muted">Nessun additivo dichiarato.</p>;
   }
 
   return (
     <>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+      <div className="flex flex-wrap gap-2">
         {additives.map((additive) => (
           <button
             key={additive.id}
             type="button"
             onClick={() => setSelected(additive)}
-            style={{
-              border: "1px solid var(--vm-border)",
-              borderRadius: 999,
-              padding: "6px 10px",
-              background: "var(--vm-surface)",
-              cursor: "pointer",
-            }}
+            className="border border-vm-border rounded-full px-4 min-h-[44px] bg-vm-surface text-vm-ink text-sm hover:border-vm-accent transition-colors cursor-pointer"
           >
             {additive.name}
           </button>

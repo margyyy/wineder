@@ -39,9 +39,7 @@ export function KioskResultsView() {
         const payload = (await response.json()) as DiscoveryResponse;
         setWines(payload.wines);
       } catch (fetchError) {
-        if (fetchError instanceof Error && fetchError.name === "AbortError") {
-          return;
-        }
+        if (fetchError instanceof Error && fetchError.name === "AbortError") return;
         setError(fetchError instanceof Error ? fetchError.message : "Errore imprevisto");
       } finally {
         setLoading(false);
@@ -53,9 +51,7 @@ export function KioskResultsView() {
   }, []);
 
   useEffect(() => {
-    if (loading || error || wines.length === 0 || share) {
-      return;
-    }
+    if (loading || error || wines.length === 0 || share) return;
 
     async function createShare() {
       try {
@@ -81,46 +77,49 @@ export function KioskResultsView() {
   }, [loading, error, wines, share]);
 
   if (loading) {
-    return <p style={{ margin: 0 }}>Sto preparando i risultati kiosk...</p>;
+    return <p className="m-0 text-vm-muted animate-pulse">Sto preparando i risultati kiosk...</p>;
   }
 
   if (error) {
-    return <p style={{ margin: 0, color: "#b00020" }}>{error}</p>;
+    return <p className="m-0 text-vm-error">{error}</p>;
   }
 
   return (
-    <section style={{ display: "grid", gap: 18 }}>
-      <h2 style={{ margin: 0, fontSize: 28 }}>I tuoi match principali</h2>
-      <div style={{ display: "grid", gap: 14, gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
+    <section className="grid gap-6">
+      <h2
+        className="m-0 font-bold text-vm-ink"
+        style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}
+      >
+        I tuoi match principali
+      </h2>
+
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {wines.map((wine) => (
           <WineResultCard key={wine.id} wine={wine} showScore />
         ))}
       </div>
 
-      <section
-        style={{
-          display: "grid",
-          gap: 10,
-          justifyItems: "center",
-          border: "1px solid var(--vm-border)",
-          borderRadius: 16,
-          padding: 18,
-          background: "var(--vm-surface)",
-        }}
-      >
-        <h3 style={{ margin: 0 }}>Porta la lista sul telefono</h3>
-        <p style={{ margin: 0, color: "var(--vm-muted)", textAlign: "center" }}>
+      <section className="grid gap-3 justify-items-center border border-vm-border rounded-2xl p-5 bg-vm-surface">
+        <h3 className="m-0 text-lg font-bold">Porta la lista sul telefono</h3>
+        <p className="m-0 text-vm-muted text-center text-sm">
           Scansiona il QR per aprire la stessa lista su mobile.
         </p>
         {share ? (
           <>
-            <img src={share.qrDataUrl} alt="QR risultati kiosk" width={220} height={220} />
-            <a href={share.shareUrl} style={{ color: "var(--vm-accent)", fontWeight: 600 }}>
+            <img
+              src={share.qrDataUrl}
+              alt="QR risultati kiosk"
+              className="w-full max-w-[240px] h-auto rounded-xl"
+            />
+            <a
+              href={share.shareUrl}
+              className="min-h-[44px] flex items-center px-6 rounded-xl bg-vm-accent text-white font-semibold hover:opacity-90 transition-opacity"
+            >
               Apri link mobile
             </a>
           </>
         ) : (
-          <p style={{ margin: 0 }}>Generazione QR in corso...</p>
+          <p className="m-0 text-vm-muted animate-pulse">Generazione QR in corso...</p>
         )}
       </section>
     </section>

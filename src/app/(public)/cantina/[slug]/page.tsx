@@ -15,17 +15,17 @@ export default async function PublicCantinaPage({ params }: Props) {
 
   return (
     <main>
-      <section style={{ maxWidth: 920, margin: "0 auto", padding: "24px 16px", display: "grid", gap: 14 }}>
-        <h1 style={{ margin: 0 }}>{profile.workshop.winery.name}</h1>
-        <p style={{ margin: 0, color: "var(--vm-muted)" }}>{profile.workshop.profileText ?? "Profilo non disponibile."}</p>
-        <p style={{ margin: 0 }}>{profile.workshop.historyText ?? "Nessuna storia disponibile."}</p>
+      <section className="max-w-3xl mx-auto px-4 py-6 md:py-10 grid gap-5">
+        <h1 className="m-0 text-2xl md:text-3xl font-bold">{profile.workshop.winery.name}</h1>
+        <p className="m-0 text-vm-muted">{profile.workshop.profileText ?? "Profilo non disponibile."}</p>
+        <p className="m-0">{profile.workshop.historyText ?? "Nessuna storia disponibile."}</p>
 
-        <section style={{ display: "grid", gap: 8 }}>
-          <h2 style={{ margin: 0 }}>Vini collegati</h2>
+        <section className="grid gap-3">
+          <h2 className="m-0 text-lg font-bold">Vini collegati</h2>
           {profile.wines.length === 0 ? (
-            <p style={{ margin: 0, color: "var(--vm-muted)" }}>Nessun vino collegato.</p>
+            <p className="m-0 text-vm-muted">Nessun vino collegato.</p>
           ) : (
-            <ul style={{ margin: 0, paddingLeft: 20, display: "grid", gap: 4 }}>
+            <ul className="m-0 pl-5 grid gap-2">
               {profile.wines.map((wine) => (
                 <li key={wine.id}>{wine.name}</li>
               ))}

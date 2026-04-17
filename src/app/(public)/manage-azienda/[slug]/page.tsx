@@ -9,8 +9,8 @@ export default async function ManageAziendaPage({ params }: Props) {
 
   return (
     <main>
-      <section style={{ maxWidth: 920, margin: "0 auto", padding: "24px 16px", display: "grid", gap: 16 }}>
-        <h1 style={{ margin: 0 }}>Gestione azienda</h1>
+      <section className="max-w-3xl mx-auto px-4 py-6 md:py-10 grid gap-5">
+        <h1 className="m-0 text-2xl font-bold">Gestione azienda</h1>
         <AziendaManager slug={slug} />
       </section>
     </main>

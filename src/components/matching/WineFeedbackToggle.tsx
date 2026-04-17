@@ -22,16 +22,16 @@ async function submitFeedback(sessionId: string, wineId: number, feedback: "LIKE
 
 export function WineFeedbackToggle({ sessionId, wineId, onDone }: Props) {
   return (
-    <div style={{ display: "flex", gap: 8 }}>
+    <div className="flex gap-3">
       <button
         type="button"
         onClick={async () => {
           await submitFeedback(sessionId, wineId, "LIKE");
           onDone?.();
         }}
-        style={{ borderRadius: 10, border: "1px solid var(--vm-border)", padding: "8px 12px", cursor: "pointer" }}
+        className="min-h-[44px] px-5 rounded-xl border border-vm-border bg-vm-surface text-vm-ink hover:border-vm-accent2 hover:text-vm-accent2 transition-colors cursor-pointer"
       >
-        Like
+        👍 Like
       </button>
       <button
         type="button"
@@ -39,9 +39,9 @@ export function WineFeedbackToggle({ sessionId, wineId, onDone }: Props) {
           await submitFeedback(sessionId, wineId, "DISLIKE");
           onDone?.();
         }}
-        style={{ borderRadius: 10, border: "1px solid var(--vm-border)", padding: "8px 12px", cursor: "pointer" }}
+        className="min-h-[44px] px-5 rounded-xl border border-vm-border bg-vm-surface text-vm-ink hover:border-vm-accent hover:text-vm-accent transition-colors cursor-pointer"
       >
-        Dislike
+        👎 Dislike
       </button>
     </div>
   );
