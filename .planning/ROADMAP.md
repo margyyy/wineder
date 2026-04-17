@@ -69,6 +69,13 @@ Plans:
 **Requirements:**
 DISC-01, DISC-02, DISC-03, DISC-04, DISC-05, DISC-06, DISC-07, DISC-08, WINE-01, WINE-02, WINE-03
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md - Discovery API foundation with distance and composable filters
+- [ ] 03-02-PLAN.md - Discover page UX, filters panel, card rendering, and match toggle
+- [ ] 03-03-PLAN.md - Wine detail map integration with seeded location points
+
 **UI hint:** yes
 
 **Success Criteria:**
@@ -122,4 +129,4 @@ KIOSK-01, KIOSK-02, KIOSK-03, KIOSK-04
 
 ---
 
-_Last updated: 2026-04-17 after phase 2 execution_
+_Last updated: 2026-04-17 after phase 3 planning_

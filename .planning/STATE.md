@@ -2,7 +2,7 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
+status: Ready to execute
 last_updated: "2026-04-17T11:10:00.000Z"
 progress:
   total_phases: 5
@@ -32,7 +32,7 @@ See: .planning/PROJECT.md (updated 2026-04-17)
 
 ## Next Command
 
-/gsd-plan-phase 3
+/gsd-execute-phase 3
 
 ## Notes
 
