@@ -1,71 +1,100 @@
 @import "tailwindcss";
 
 @theme {
-  --color-vm-bg: #f7f3ec;
+  --color-vm-bg: #f5efe6;
   --color-vm-surface: #fffdf9;
-  --color-vm-ink: #1f1a17;
-  --color-vm-muted: #6f665f;
-  --color-vm-accent: #8f1f2e;
-  --color-vm-accent2: #7d8d3f;
-  --color-vm-border: #e6d8c9;
+  --color-vm-ink: #1a1410;
+  --color-vm-muted: #6b5f57;
+  --color-vm-accent: #8b1a2a;
+  --color-vm-accent2: #6b7a35;
+  --color-vm-border: #e0cdb8;
   --color-vm-error: #b00020;
-  --color-vm-success-bg: #ddfbe3;
-  --color-vm-success-ink: #126227;
+  --color-vm-success-bg: #d4f7e0;
+  --color-vm-success-ink: #0f5a2a;
 }
 
 :root {
-  --vm-bg: #f7f3ec;
+  --vm-bg: #f5efe6;
   --vm-surface: #fffdf9;
-  --vm-ink: #1f1a17;
-  --vm-muted: #6f665f;
-  --vm-accent: #8f1f2e;
-  --vm-accent-2: #7d8d3f;
-  --vm-border: #e6d8c9;
+  --vm-ink: #1a1410;
+  --vm-muted: #6b5f57;
+  --vm-accent: #8b1a2a;
+  --vm-accent-2: #6b7a35;
+  --vm-border: #e0cdb8;
+  --vm-shadow-card: 0 1px 4px rgba(26, 20, 16, 0.06), 0 6px 20px rgba(26, 20, 16, 0.08);
+  --vm-shadow-hover: 0 10px 36px rgba(26, 20, 16, 0.14), 0 2px 8px rgba(26, 20, 16, 0.06);
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   background: var(--vm-bg);
   color: var(--vm-ink);
-  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Inter", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 main {
   min-height: 100vh;
 }
 
-/* Base form element styles */
+/* Form elements */
 input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
 select,
 textarea {
   width: 100%;
   display: block;
-  border: 1px solid var(--vm-border);
-  border-radius: 8px;
-  padding: 10px 12px;
+  border: 1.5px solid var(--vm-border);
+  border-radius: 10px;
+  padding: 10px 14px;
   font-family: inherit;
   font-size: 1rem;
-  background: var(--vm-surface);
+  background: white;
   color: var(--vm-ink);
-  margin-top: 4px;
+  margin-top: 6px;
+  transition: border-color 150ms, box-shadow 150ms;
+  appearance: none;
 }
 
 input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
 select:focus,
 textarea:focus {
-  outline: 2px solid var(--vm-accent);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--vm-accent);
+  box-shadow: 0 0 0 3px rgba(139, 26, 42, 0.12);
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b5f57' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 40px;
+  cursor: pointer;
 }
 
 label {
   display: block;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--vm-ink);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--vm-muted);
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--vm-border);
+  accent-color: var(--vm-accent);
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  margin: 0;
+  appearance: auto;
+  box-shadow: none;
 }
