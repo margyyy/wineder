@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Explicit source scan — ensures dev server (Turbopack) and build both find all classes */
+@source "../../app";
+@source "../../components";
+
 @theme {
   --color-vm-bg: #f5efe6;
   --color-vm-surface: #fffdf9;
