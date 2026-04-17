@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+:root {
+  --vm-bg: #f7f3ec;
+  --vm-surface: #fffdf9;
+  --vm-ink: #1f1a17;
+  --vm-muted: #6f665f;
+  --vm-accent: #8f1f2e;
+  --vm-accent-2: #7d8d3f;
+  --vm-border: #e6d8c9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--vm-bg);
+  color: var(--vm-ink);
+  font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+}
+
+main {
+  min-height: 100vh;
+}
