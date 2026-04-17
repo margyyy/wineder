@@ -48,9 +48,9 @@ MATCH-01, MATCH-02, MATCH-03, MATCH-04, MATCH-05
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md - DB and cosine-matching contracts + schema push
-- [ ] 02-02-PLAN.md - Questionnaire-first flow and survey vector persistence
-- [ ] 02-03-PLAN.md - Feedback loop API and reranking from baseline vector
+- [x] 02-01-PLAN.md - DB and cosine-matching contracts + schema push
+- [x] 02-02-PLAN.md - Questionnaire-first flow and survey vector persistence
+- [x] 02-03-PLAN.md - Feedback loop API and reranking from baseline vector
 
 **UI hint:** yes
 
@@ -122,4 +122,4 @@ KIOSK-01, KIOSK-02, KIOSK-03, KIOSK-04
 
 ---
 
-_Last updated: 2026-04-17 after phase 2 planning_
+_Last updated: 2026-04-17 after phase 2 execution_
