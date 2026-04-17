@@ -7,6 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum FeedbackType {
+  LIKE
+  DISLIKE
+}
+
 model Winery {
   id       Int    @id @default(autoincrement())
   name     String @unique
@@ -33,10 +38,24 @@ model Wine {
   priceRangeMin  Float
   priceRangeMax  Float
 
+  dolcezza      Float @default(0)
+  acidita       Float @default(0)
+  tannini       Float @default(0)
+  corpo         Float @default(0)
+  alcol         Float @default(0)
+  effervescenza Float @default(0)
+  fruttato      Float @default(0)
+  floreale      Float @default(0)
+  speziato      Float @default(0)
+  terroso       Float @default(0)
+  legnoso       Float @default(0)
+  minerale      Float @default(0)
+
   wineryId Int
   winery   Winery @relation(fields: [wineryId], references: [id], onDelete: Cascade)
 
-  wineAdditives WineAdditive[]
+  wineAdditives  WineAdditive[]
+  feedbackEvents WineFeedbackEvent[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -61,4 +80,73 @@ model WineAdditive {
   additive Additive @relation(fields: [additiveId], references: [id], onDelete: Cascade)
 
   @@id([wineId, additiveId])
+}
+
+model SurveySession {
+  id             String              @id @default(uuid())
+  answers        SurveyAnswer[]
+  profile        UserTasteProfile?
+  feedbackEvents WineFeedbackEvent[]
+  createdAt      DateTime            @default(now())
+}
+
+model SurveyAnswer {
+  id              Int    @id @default(autoincrement())
+  surveySessionId String
+  questionId      String
+  optionId        String
+
+  surveySession SurveySession @relation(fields: [surveySessionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+model UserTasteProfile {
+  id              Int    @id @default(autoincrement())
+  surveySessionId String @unique
+  learningRate    Float  @default(0.25)
+
+  baselineDolcezza      Float
+  baselineAcidita       Float
+  baselineTannini       Float
+  baselineCorpo         Float
+  baselineAlcol         Float
+  baselineEffervescenza Float
+  baselineFruttato      Float
+  baselineFloreale      Float
+  baselineSpeziato      Float
+  baselineTerroso       Float
+  baselineLegnoso       Float
+  baselineMinerale      Float
+
+  currentDolcezza      Float
+  currentAcidita       Float
+  currentTannini       Float
+  currentCorpo         Float
+  currentAlcol         Float
+  currentEffervescenza Float
+  currentFruttato      Float
+  currentFloreale      Float
+  currentSpeziato      Float
+  currentTerroso       Float
+  currentLegnoso       Float
+  currentMinerale      Float
+
+  surveySession SurveySession @relation(fields: [surveySessionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WineFeedbackEvent {
+  id              Int          @id @default(autoincrement())
+  surveySessionId String
+  wineId          Int
+  feedback        FeedbackType
+  createdAt       DateTime     @default(now())
+
+  surveySession SurveySession @relation(fields: [surveySessionId], references: [id], onDelete: Cascade)
+  wine          Wine          @relation(fields: [wineId], references: [id], onDelete: Cascade)
+
+  @@index([surveySessionId, createdAt])
 }
