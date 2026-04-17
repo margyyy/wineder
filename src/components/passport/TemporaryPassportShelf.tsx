@@ -167,9 +167,7 @@ export function TemporaryPassportShelf() {
         className="flex items-center justify-center rounded-2xl bg-vm-bg border border-vm-border"
         style={{ minHeight: 220 }}
       >
-        <span className="text-vm-muted text-sm">
-          Caricamento Passport…
-        </span>
+        <span className="text-vm-muted text-sm">Caricamento Passport…</span>
       </div>
     );
   }

@@ -84,6 +84,8 @@ export function DiscoveryResultsGrid({ hasSession }: Props) {
     return Array.from(byId.values()).sort((a, b) => a.name.localeCompare(b.name));
   }, [data]);
 
+  const isInitialLoading = loading && !data && !error;
+
   return (
     <div className="grid gap-5">
       {!hasSession && (
@@ -99,7 +101,24 @@ export function DiscoveryResultsGrid({ hasSession }: Props) {
         onReset={resetFilters}
       />
 
-      {loading && (
+      {isInitialLoading && (
+        <div
+          className="min-h-[320px] rounded-2xl border border-vm-border bg-vm-surface px-6 flex flex-col items-center justify-center text-center"
+          role="status"
+          aria-live="polite"
+        >
+          <span
+            className="w-11 h-11 rounded-full border-4 border-vm-border border-t-vm-accent animate-spin"
+            aria-hidden="true"
+          />
+          <p className="m-0 mt-5 text-lg font-bold text-vm-ink">Sto cercando i tuoi match…</p>
+          <p className="m-0 mt-2 text-sm text-vm-muted max-w-md">
+            Ancora qualche secondo: sto caricando i vini migliori vicino a te.
+          </p>
+        </div>
+      )}
+
+      {loading && !isInitialLoading && (
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
             <div
