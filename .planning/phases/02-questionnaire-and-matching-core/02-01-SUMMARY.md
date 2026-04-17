@@ -17,16 +17,19 @@ metrics:
 ---
 
 ## Plan Result
+
 Plan 01 completed successfully.
 
 ## Commits
-| Task | Commit | Message |
-|------|--------|---------|
-| Task 1 | 3700870 | feat(02): implement questionnaire matching core |
-| Task 2 | 3700870 | feat(02): implement questionnaire matching core |
+
+| Task   | Commit        | Message                                             |
+| ------ | ------------- | --------------------------------------------------- |
+| Task 1 | 3700870       | feat(02): implement questionnaire matching core     |
+| Task 2 | 3700870       | feat(02): implement questionnaire matching core     |
 | Task 3 | runtime check | prisma schema pushed and seeded during verification |
 
 ## Verification
+
 - `npx prisma format` passed.
 - `npx prisma validate` passed.
 - `npx prisma db push` passed.
@@ -34,7 +37,9 @@ Plan 01 completed successfully.
 - Matching feature contract and vector math modules compiled and tested.
 
 ## Deviations
+
 - None.
 
 ## Self-Check
+
 PASSED

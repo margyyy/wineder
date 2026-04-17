@@ -461,13 +461,162 @@ async function seedWinery(wineryData: SeedWinery) {
   }
 }
 
+const additives = [
+  {
+    name: "Solfiti",
+    description: "Conservante usato per stabilita microbiologica e ossidativa del vino.",
+  },
+  {
+    name: "Lieviti selezionati",
+    description: "Lieviti impiegati in fermentazione per controllo aromatico e regolarita del processo.",
+  },
+  {
+    name: "Bentonite",
+    description: "Agente chiarificante minerale usato per stabilizzare proteine e limpidezza.",
+  },
+] as const;
+
+const workshops = [
+  {
+    name: "Enoteca Arena",
+    slug: "enoteca-arena",
+    category: "bar",
+    lat: 45.4402,
+    lng: 10.9956,
+    profileText: "Wine bar nel centro storico con degustazioni serali.",
+    historyText: "Aperto nel 2016 con focus su produttori locali.",
+    winerySlug: null,
+    wineSlugs: ["pasqua-11-minutes-rose", "farina-lugana"],
+  },
+  {
+    name: "Pasqua Wine",
+    slug: "pasqua-wine-workshop",
+    category: "winery",
+    lat: 45.4384,
+    lng: 10.9916,
+    profileText: "Profilo pubblico cantina Pasqua.",
+    historyText: "Cantina storica veronese.",
+    winerySlug: "pasqua-wine",
+    wineSlugs: ["pasqua-11-minutes-rose", "pasqua-hey-french", "pasqua-passionesentimento-rosso"],
+  },
+] as const;
+
+async function seedAdditives() {
+  for (const additive of additives) {
+    await prisma.additive.upsert({
+      where: { name: additive.name },
+      create: additive,
+      update: additive,
+    });
+  }
+}
+
+async function attachInitialAdditives() {
+  const additiveByName = Object.fromEntries(
+    (await prisma.additive.findMany()).map((item) => [item.name, item.id]),
+  ) as Record<string, number>;
+
+  const mapping: Array<{ wineSlug: string; additiveNames: string[]; productionDescription: string }> = [
+    {
+      wineSlug: "pasqua-hey-french",
+      additiveNames: ["Solfiti", "Lieviti selezionati"],
+      productionDescription: "Fermentazione in acciaio e affinamento in legno per struttura e complessita.",
+    },
+    {
+      wineSlug: "farina-amarone-classico",
+      additiveNames: ["Solfiti", "Bentonite"],
+      productionDescription: "Appassimento tradizionale e affinamento prolungato in botte.",
+    },
+  ];
+
+  for (const row of mapping) {
+    const wine = await prisma.wine.findUnique({ where: { slug: row.wineSlug } });
+    if (!wine) {
+      continue;
+    }
+
+    await prisma.wine.update({
+      where: { id: wine.id },
+      data: {
+        productionDescription: row.productionDescription,
+      },
+    });
+
+    await prisma.wineAdditive.deleteMany({ where: { wineId: wine.id } });
+    await prisma.wineAdditive.createMany({
+      data: row.additiveNames
+        .map((name) => additiveByName[name])
+        .filter((id): id is number => typeof id === "number")
+        .map((additiveId) => ({ wineId: wine.id, additiveId })),
+    });
+
+    await prisma.wine.update({
+      where: { id: wine.id },
+      data: {
+        isVerified: true,
+      },
+    });
+  }
+}
+
+async function seedWorkshops() {
+  for (const workshop of workshops) {
+    const winery = workshop.winerySlug
+      ? await prisma.winery.findUnique({ where: { slug: workshop.winerySlug } })
+      : null;
+
+    const record = await prisma.workshop.upsert({
+      where: { slug: workshop.slug },
+      create: {
+        name: workshop.name,
+        slug: workshop.slug,
+        category: workshop.category,
+        lat: workshop.lat,
+        lng: workshop.lng,
+        profileText: workshop.profileText,
+        historyText: workshop.historyText,
+        wineryId: winery?.id,
+      },
+      update: {
+        name: workshop.name,
+        category: workshop.category,
+        lat: workshop.lat,
+        lng: workshop.lng,
+        profileText: workshop.profileText,
+        historyText: workshop.historyText,
+        wineryId: winery?.id,
+      },
+    });
+
+    await prisma.workshopWine.deleteMany({ where: { workshopId: record.id } });
+
+    const wines = await prisma.wine.findMany({
+      where: {
+        slug: { in: [...workshop.wineSlugs] },
+      },
+      select: { id: true },
+    });
+
+    if (wines.length > 0) {
+      await prisma.workshopWine.createMany({
+        data: wines.map((wine) => ({ workshopId: record.id, wineId: wine.id })),
+      });
+    }
+  }
+}
+
 async function main() {
   for (const winery of wineries) {
     await seedWinery(winery);
   }
 
+  await seedAdditives();
+  await attachInitialAdditives();
+  await seedWorkshops();
+
   const additiveCount = await prisma.additive.count();
-  console.log(`Seed complete. Wineries: ${wineries.length}, additives: ${additiveCount}`);
+  const workshopCount = await prisma.workshop.count();
+  console.log(`Seed complete. Wineries: ${wineries.length}, additives: ${additiveCount}, workshops: ${workshopCount}`);
 }
 
 main()

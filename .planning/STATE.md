@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-last_updated: "2026-04-17T12:05:00.000Z"
+status: v1.0 milestone complete
+last_updated: "2026-04-17T10:26:05.952Z"
 progress:
   total_phases: 5
-  completed_phases: 3
-  total_plans: 12
-  completed_plans: 8
-  percent: 60
+  completed_phases: 5
+  total_plans: 14
+  completed_plans: 22
+  percent: 100
 ---
 
 # STATE
@@ -19,7 +19,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-17)
 
 **Core value:** Con poche domande intelligenti, l'utente trova subito vini rilevanti vicino a lui e puo continuare a scoprire in modo semplice e trasparente.
-**Current focus:** Phase 04 - winery-and-workshop-management
+**Current focus:** Phase 05 - kiosk-and-conversion-flow
 
 ## Status Snapshot
 
@@ -29,14 +29,16 @@ See: .planning/PROJECT.md (updated 2026-04-17)
 - Phase 01 executed: yes
 - Phase 02 executed: yes
 - Phase 03 executed: yes
+- Phase 04 executed: yes
+- Phase 05 executed: yes
 - Ready for next command: yes
 
 ## Next Command
 
-/gsd-execute-phase 4
+/gsd-complete-milestone
 
 ## Notes
 
+- Phase 5 delivered kiosk questionnaire, completion results, QR handoff, and mobile persisted list route.
 - Workflow mode is yolo with coarse granularity.
 - Planning docs are tracked in git.
-- Research/plan-check/verifier workflow agents are disabled in config for execution-time efficiency.

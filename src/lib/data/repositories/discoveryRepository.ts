@@ -94,6 +94,13 @@ export async function listWineAvailabilityPoints(slug: string) {
       color: wine.color,
       alcoholPercent: wine.alcoholPercent,
       vintage: wine.vintage,
+      productionDescription: wine.productionDescription,
+      isVerified: wine.isVerified,
+      additives: wine.wineAdditives.map((entry) => ({
+        id: entry.additive.id,
+        name: entry.additive.name,
+        description: entry.additive.description,
+      })),
     },
     points: [
       {

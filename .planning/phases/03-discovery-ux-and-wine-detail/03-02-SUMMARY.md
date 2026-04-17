@@ -20,21 +20,26 @@ metrics:
 ---
 
 ## Plan Result
+
 Plan 02 completed successfully.
 
 ## Commits
-| Task | Commit | Message |
-|------|--------|---------|
+
+| Task   | Commit  | Message                                                 |
+| ------ | ------- | ------------------------------------------------------- |
 | Task 1 | f73a67b | feat(03): implement discovery ux filters and map detail |
 | Task 2 | f73a67b | feat(03): implement discovery ux filters and map detail |
 | Task 3 | f73a67b | feat(03): implement discovery ux filters and map detail |
 
 ## Verification
+
 - `npm run build` passed with `/discover` route, filter panel, and card rendering.
 - Root route now redirects to `/discover` when session cookie exists.
 
 ## Deviations
+
 - Filter option values are derived from loaded discovery rows in this MVP implementation.
 
 ## Self-Check
+
 PASSED

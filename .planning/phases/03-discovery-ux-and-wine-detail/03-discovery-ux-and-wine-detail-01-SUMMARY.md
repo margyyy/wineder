@@ -19,21 +19,26 @@ metrics:
 ---
 
 ## Plan Result
+
 Plan 01 completed successfully.
 
 ## Commits
-| Task | Commit | Message |
-|------|--------|---------|
+
+| Task   | Commit  | Message                                                 |
+| ------ | ------- | ------------------------------------------------------- |
 | Task 1 | f73a67b | feat(03): implement discovery ux filters and map detail |
 | Task 2 | f73a67b | feat(03): implement discovery ux filters and map detail |
 | Task 3 | f73a67b | feat(03): implement discovery ux filters and map detail |
 
 ## Verification
+
 - `npm run test` passed, including discovery filter and discovery query parser tests.
 - `npm run build` passed with discovery API route integrated.
 
 ## Deviations
+
 - None.
 
 ## Self-Check
+
 PASSED

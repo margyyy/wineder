@@ -20,23 +20,26 @@ model Winery {
   lng      Float
   category String
 
-  wines Wine[]
+  wines     Wine[]
+  workshops Workshop[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Wine {
-  id             Int    @id @default(autoincrement())
-  name           String
-  slug           String @unique
-  color          String
-  alcoholPercent Float
-  vintage        Int
-  bodyScore      Int
-  aromaTags      String
-  priceRangeMin  Float
-  priceRangeMax  Float
+  id                    Int     @id @default(autoincrement())
+  name                  String
+  slug                  String  @unique
+  color                 String
+  alcoholPercent        Float
+  vintage               Int
+  bodyScore             Int
+  aromaTags             String
+  priceRangeMin         Float
+  priceRangeMax         Float
+  productionDescription String?
+  isVerified            Boolean @default(false)
 
   dolcezza      Float @default(0)
   acidita       Float @default(0)
@@ -56,6 +59,7 @@ model Wine {
 
   wineAdditives  WineAdditive[]
   feedbackEvents WineFeedbackEvent[]
+  workshopWines  WorkshopWine[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -80,6 +84,35 @@ model WineAdditive {
   additive Additive @relation(fields: [additiveId], references: [id], onDelete: Cascade)
 
   @@id([wineId, additiveId])
+}
+
+model Workshop {
+  id          Int     @id @default(autoincrement())
+  name        String
+  slug        String  @unique
+  category    String
+  lat         Float
+  lng         Float
+  profileText String?
+  historyText String?
+
+  wineryId Int?
+  winery   Winery? @relation(fields: [wineryId], references: [id], onDelete: SetNull)
+
+  workshopWines WorkshopWine[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WorkshopWine {
+  workshopId Int
+  wineId     Int
+
+  workshop Workshop @relation(fields: [workshopId], references: [id], onDelete: Cascade)
+  wine     Wine     @relation(fields: [wineId], references: [id], onDelete: Cascade)
+
+  @@id([workshopId, wineId])
 }
 
 model SurveySession {
@@ -149,4 +182,12 @@ model WineFeedbackEvent {
   wine          Wine          @relation(fields: [wineId], references: [id], onDelete: Cascade)
 
   @@index([surveySessionId, createdAt])
+}
+
+model KioskShare {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  sessionId String?
+  payload   String
+  createdAt DateTime @default(now())
 }

@@ -6,7 +6,11 @@ import { questionBank } from "../../lib/domain/matching/questionBank";
 import { QuestionStepCard } from "./QuestionStepCard";
 import { QuestionnaireProgress } from "./QuestionnaireProgress";
 
-export function QuestionnaireFlow() {
+type Props = {
+  onCompleteRedirect?: string;
+};
+
+export function QuestionnaireFlow({ onCompleteRedirect = "/discover" }: Props) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -38,7 +42,7 @@ export function QuestionnaireFlow() {
       return;
     }
 
-    router.push("/discover");
+    router.push(onCompleteRedirect);
   }
 
   return (
@@ -76,7 +80,13 @@ export function QuestionnaireFlow() {
             type="button"
             disabled={payloadAnswers.length !== questionBank.length}
             onClick={submitSurvey}
-            style={{ borderRadius: 10, border: "1px solid var(--vm-accent)", padding: "10px 14px", background: "var(--vm-accent)", color: "white" }}
+            style={{
+              borderRadius: 10,
+              border: "1px solid var(--vm-accent)",
+              padding: "10px 14px",
+              background: "var(--vm-accent)",
+              color: "white",
+            }}
           >
             Calcola il mio match
           </button>

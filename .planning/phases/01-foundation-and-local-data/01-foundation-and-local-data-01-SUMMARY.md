@@ -22,22 +22,27 @@ metrics:
 ---
 
 ## Plan Result
+
 Plan 01 completed successfully.
 
 ## Commits
-| Task | Commit | Message |
-|------|--------|---------|
-| Task 1 | 52abf52 | feat(01-01): bootstrap app shell and UI token baseline |
-| Task 2 | 2e7ec5c | feat(01-01): add prisma sqlite schema and client singleton |
-| Task 3 | 2e7ec5c + runtime check | blocking schema push executed via `npx prisma db push` |
+
+| Task   | Commit                  | Message                                                    |
+| ------ | ----------------------- | ---------------------------------------------------------- |
+| Task 1 | 52abf52                 | feat(01-01): bootstrap app shell and UI token baseline     |
+| Task 2 | 2e7ec5c                 | feat(01-01): add prisma sqlite schema and client singleton |
+| Task 3 | 2e7ec5c + runtime check | blocking schema push executed via `npx prisma db push`     |
 
 ## Verification
+
 - `npx prisma validate` passed.
 - `npx prisma db push` passed and generated Prisma client.
 - Foundation page and token stylesheet files exist.
 
 ## Deviations
+
 - None.
 
 ## Self-Check
+
 PASSED
