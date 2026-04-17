@@ -45,6 +45,13 @@ DATA-01, DATA-02, DATA-03, DATA-04, DATA-05
 **Requirements:**
 MATCH-01, MATCH-02, MATCH-03, MATCH-04, MATCH-05
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md - DB and cosine-matching contracts + schema push
+- [ ] 02-02-PLAN.md - Questionnaire-first flow and survey vector persistence
+- [ ] 02-03-PLAN.md - Feedback loop API and reranking from baseline vector
+
 **UI hint:** yes
 
 **Success Criteria:**
@@ -115,4 +122,4 @@ KIOSK-01, KIOSK-02, KIOSK-03, KIOSK-04
 
 ---
 
-_Last updated: 2026-04-17 after roadmap creation_
+_Last updated: 2026-04-17 after phase 2 planning_
