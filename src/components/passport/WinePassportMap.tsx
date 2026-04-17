@@ -5,18 +5,9 @@ import { createPortal } from "react-dom";
 import { CircleMarker, MapContainer, TileLayer } from "react-leaflet";
 import Link from "next/link";
 import type { Map as LeafletMap } from "leaflet";
+import { getLikedWines, type PassportEntry } from "../../lib/passport-storage";
 
-type LikedWine = {
-  id: number;
-  slug: string;
-  name: string;
-  color: string;
-  vintage: number;
-  wineryId: number;
-  wineryName: string;
-  wineryLat: number;
-  wineryLng: number;
-};
+type LikedWine = PassportEntry;
 
 type WineryGroup = {
   wineryId: number;
@@ -69,7 +60,7 @@ function WineryModal({ group, onClose }: ModalProps) {
         <div className="grid gap-2">
           {group.wines.map((wine) => (
             <Link
-              key={wine.id}
+              key={wine.wineId}
               href={`/wine/${wine.slug}`}
               className="flex items-center gap-3 p-3 rounded-xl border border-vm-border hover:border-vm-accent/50 hover:bg-vm-bg transition-all"
             >
@@ -101,11 +92,8 @@ export function WinePassportMap() {
   const mapRef = useRef<LeafletMap | null>(null);
 
   useEffect(() => {
-    fetch("/api/passport")
-      .then((r) => r.json())
-      .then((data) => setWines(data.wines ?? []))
-      .catch(() => {})
-      .finally(() => setLoading(false));
+    setWines(getLikedWines());
+    setLoading(false);
   }, []);
 
   // Fit Italy bounds once map is ready

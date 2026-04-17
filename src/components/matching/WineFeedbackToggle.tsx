@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { saveLike, removeLike, type PassportEntry } from "../../lib/passport-storage";
 
 type Props = {
   sessionId: string;
   wineId: number;
+  passportEntry: Omit<PassportEntry, "wineId">;
   onDone?: () => void;
 };
 
@@ -18,16 +20,21 @@ async function submitFeedback(sessionId: string, wineId: number, feedback: "LIKE
   return response.json();
 }
 
-export function WineFeedbackToggle({ sessionId, wineId, onDone }: Props) {
+export function WineFeedbackToggle({ sessionId, wineId, passportEntry, onDone }: Props) {
   const [sent, setSent] = useState<"LIKE" | "DISLIKE" | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handle(feedback: "LIKE" | "DISLIKE") {
     if (loading) return;
-    if (sent === feedback) return; // already set, no change
+    if (sent === feedback) return;
     setLoading(true);
     try {
       await submitFeedback(sessionId, wineId, feedback);
+      if (feedback === "LIKE") {
+        saveLike({ wineId, ...passportEntry });
+      } else {
+        removeLike(wineId);
+      }
       setSent(feedback);
       onDone?.();
     } finally {

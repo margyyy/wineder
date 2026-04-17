@@ -1,0 +1,20 @@
+<svg width="220" height="300" viewBox="0 0 220 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="bottle-shape">
+      <path d="M127 22V70L140 95V123L172 159V254C172 272 157 286 139 286H81C63 286 48 272 48 254V159L80 123V95L93 70V22H127Z" />
+    </clipPath>
+    <linearGradient id="glass-shine" x1="48" y1="22" x2="172" y2="286" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.45" />
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.02" />
+    </linearGradient>
+  </defs>
+
+  <path d="M127 22V70L140 95V123L172 159V254C172 272 157 286 139 286H81C63 286 48 272 48 254V159L80 123V95L93 70V22H127Z" fill="#F4EEE7" stroke="#D8CFC3" stroke-width="4" />
+
+  <g clip-path="url(#bottle-shape)">
+    <image href="/images/wine-card.png" x="32" y="28" width="156" height="258" preserveAspectRatio="xMidYMid slice" />
+    <rect x="48" y="22" width="124" height="264" fill="url(#glass-shine)" />
+  </g>
+
+  <rect x="92" y="8" width="36" height="16" rx="6" fill="#C7B8A6" />
+</svg>

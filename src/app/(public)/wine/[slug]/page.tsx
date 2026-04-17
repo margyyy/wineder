@@ -69,7 +69,20 @@ export default async function WineDetailPage({ params }: Props) {
         </section>
 
         {sessionId ? (
-          <WineFeedbackToggle sessionId={sessionId} wineId={availability.wine.id} />
+          <WineFeedbackToggle
+            sessionId={sessionId}
+            wineId={availability.wine.id}
+            passportEntry={{
+              slug: availability.wine.slug,
+              name: availability.wine.name,
+              color: availability.wine.color,
+              vintage: availability.wine.vintage,
+              wineryId: availability.points[0]?.id ?? 0,
+              wineryName: availability.wine.wineryName,
+              wineryLat: availability.points[0]?.lat ?? 0,
+              wineryLng: availability.points[0]?.lng ?? 0,
+            }}
+          />
         ) : (
           <p className="text-vm-muted m-0">
             Completa prima il questionario per attivare like/dislike.
